@@ -146,7 +146,6 @@ descriptions of every file and column.
   title   = {StereoAtlas: A Large-Scale Dataset of Chiral Compounds with
              Distinct Bioactivities Curated from ChEMBL37},
   author  = {Thangaraj, Saisaran and Murugan, N. Arul},
-  journal = {Scientific Data},
   year    = {2026},
   doi     = {10.5281/zenodo.23158759}
 }
