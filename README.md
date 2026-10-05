@@ -2,10 +2,10 @@
 
 Automated 15-script Python pipeline generating the StereoAtlas dataset of
 experimentally measured bioactivity differences between stereoisomers,
-derived from ChEMBL v37 (1,252,051 records · 879 activity types · 155,526 true isomer pairs).
+derived from ChEMBL37 (1,252,051 records · 879 activity types · 155,526 true isomer pairs).
 
 **Manuscript:** Saisaran Thangaraj & N. Arul Murugan. *StereoAtlas: A Large-Scale Dataset of Chiral Compounds with Distinct Bioactivities Curated from ChEMBL37.*
-Scientific Data (2026). DOI: [ZENODO_DOI_PENDING — update before final submission]
+Scientific Data (2026). DOI: 10.5281/zenodo.23158759
 
 ---
 
@@ -206,7 +206,7 @@ cat("Extreme pairs:", nrow(extreme), "\n")
 ## Data Availability
 
 Full dataset deposited at Zenodo (CC BY 4.0):
-**[ZENODO_DOI_PENDING — update before final submission]**
+**10.5281/zenodo.23158759**
 
 ---
 
@@ -219,7 +219,7 @@ Full dataset deposited at Zenodo (CC BY 4.0):
   author  = {Thangaraj, Saisaran and Murugan, N. Arul},
   journal = {Scientific Data},
   year    = {2026},
-  doi     = {ZENODO_DOI_PENDING}
+  doi     = {10.5281/zenodo.23158759}
 }
 ```
 
@@ -256,7 +256,7 @@ across all 377,204 stereochemical families is:
 
 ## Output Files
 
-All data files are deposited on Zenodo (DOI: [10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)).
+All data files are deposited on Zenodo (DOI: [10.5281/zenodo.23158759](https://doi.org/10.5281/zenodo.23158759)).
 
 | File | Size | Description |
 |------|------|-------------|
