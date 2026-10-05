@@ -2,10 +2,12 @@
 
 Automated 15-script Python pipeline generating the StereoAtlas dataset of
 experimentally measured bioactivity differences between stereoisomers,
-derived from ChEMBL37 (1,252,051 records · 879 activity types · 155,526 true isomer pairs).
+derived from ChEMBL v37 (1,252,051 records · 879 activity types · 155,526 true isomer pairs).
 
 **Manuscript:** Saisaran Thangaraj & N. Arul Murugan. *StereoAtlas: A Large-Scale Dataset of Chiral Compounds with Distinct Bioactivities Curated from ChEMBL37.*
-Scientific Data (2026). DOI: 10.5281/zenodo.23158759
+Scientific Data (2026).
+
+**Data deposit (Zenodo):** https://doi.org/10.5281/zenodo.23158759
 
 ---
 
@@ -125,88 +127,15 @@ tqdm>=4.65
 
 ---
 
-## Key Outputs
+## Data
 
-| File | Size | Description |
-|------|------|-------------|
-| `FAMILY_MINMAX_FOLD.csv`           | 10.7 MB  | One max fold difference per family–target–organism–metric group. Primary analysis file. |
-| `FAMILY_REFERENCE_FOLD.csv`        | 13.3 MB  | Fold differences relative to a designated reference stereoform per family. |
-| `TRUE_ISOMER_LITERATURE_CLEAN.csv` | 32.4 MB  | Literature-validated pairs with PubMed IDs and DOIs (Script 12). |
-| `STEREOATLAS_MASTER.csv`           | 60.4 MB  | Full merged master file combining all pipeline outputs (Script 15). |
-| `STEREOATLAS_MASTER_LITE.csv`      | 31.2 MB  | Filtered master: true isomer pairs with defined stereo class and fold ≥ 2× (Script 15). |
-| `by_metric/`                       | ~30 MB   | Per-metric breakdowns (IC₅₀, Kᵢ, Kd, EC₅₀, and 875 additional types). |
-| `STEREOCENTRE_COUNTS_v4.xlsx`      | 8.1 MB   | Per-compound stereocentre counts with configurational coverage (Script 18). |
-| `MISSING_COMBINATIONS.csv`         | ~6 MB    | Absent stereoisomer configurations — candidate synthesis targets (Script 18). |
-| `TARGET_STEREOSELECTIVITY_SUMMARY.csv` | 1.1 MB | TSI scores across 2,732 targets (Script 13). |
-| `TARGET_PRIORITY_RANKING.csv`      | 1.1 MB   | Targets ranked by TSI descending (Script 13). |
-| `TARGET_DATASET_COVERAGE.csv`      | 713 KB   | DCS scores and coverage classifications (Script 14). |
-| `ATROPISOMER_FOLD_SUMMARY.csv`     | 119 KB   | Candidate atropisomeric families with fold differences (Scripts 16–17). |
-| `protein_class_extreme_summary.csv`| Variable | Protein class breakdown of Extreme (≥50×) stereoselectivity pairs. |
+All output files are deposited at Zenodo under CC BY 4.0:
 
----
+**https://doi.org/10.5281/zenodo.23158759**
 
-## Quick Start — Python
-
-```python
-import pandas as pd
-
-# Load primary analysis file
-df = pd.read_csv('FAMILY_MINMAX_FOLD.csv', low_memory=False)
-
-# Filter to Extreme stereoselectivity pairs (fold ≥ 50×)
-extreme = df[df['stereoselectivity_class'] == 'Extreme']
-print(f"Extreme pairs: {len(extreme):,}")
-
-# Top targets by pair count
-top = df.groupby('target_chembl_id').size().sort_values(ascending=False).head(10)
-print(top)
-```
-
-## Quick Start — R
-
-```r
-library(data.table)
-df <- fread('FAMILY_MINMAX_FOLD.csv')
-extreme <- df[stereoselectivity_class == 'Extreme']
-cat("Extreme pairs:", nrow(extreme), "\n")
-```
-
----
-
-## Stereoselectivity Tiers
-
-| Tier | Fold Difference | Biological interpretation |
-|------|----------------|--------------------------|
-| None | < 2× | Within typical assay variability |
-| Mild | 2–5× | Weak but reproducible stereoselectivity |
-| Moderate | 5–10× | Notable stereoselectivity |
-| Strong | 10–50× | Clinically relevant regime |
-| Extreme | > 50× | Chiral-switch justification threshold |
-
----
-
-## Dataset Statistics
-
-| Metric | Value |
-|--------|-------|
-| Raw ChEMBL records | 1,252,051 |
-| Records after QC | 995,043 (79.5% retention) |
-| Unique compounds | 420,721 |
-| Stereochemical families | 377,232 |
-| True isomer pairs | 155,526 |
-| IC₅₀ pairs | 38,446 |
-| Biological targets | 4,519 |
-| Organisms | 471 |
-| Activity types | 879 |
-| Maximum fold difference | 195,000,000× (oxytocin receptor, Kd) |
-| Homo sapiens fraction | 74.6% |
-
----
-
-## Data Availability
-
-Full dataset deposited at Zenodo (CC BY 4.0):
-**10.5281/zenodo.23158759**
+The Zenodo deposit contains the full dataset (STEREOATLAS_MASTER.csv, FAMILY_MINMAX_FOLD.csv,
+FAMILY_REFERENCE_FOLD.csv, by_metric.zip, and all supporting files) with detailed
+descriptions of every file and column.
 
 ---
 
@@ -231,48 +160,3 @@ Full dataset deposited at Zenodo (CC BY 4.0):
 
 **Data** (Zenodo deposit): Creative Commons CC BY 4.0.
 Data may be used, shared, and built upon with appropriate attribution.
-
-## New in This Version: Single-form Family Files
-
-Three additional files describe families where only one stereoisomer was tested:
-
-| File | Description |
-|------|-------------|
-| `ONLY_R_FAMILIES.csv` | 99,467 families where only the all-R configuration was tested (n=1–5) |
-| `ONLY_S_FAMILIES.csv` | 88,356 families where only the all-S configuration was tested (n=1–5) |
-| `MIXED_SINGLE_FAMILIES.csv` | 114,573 families (n≥2) where only one mixed R/S stereoform was tested |
-
-These files correct the previously inflated coverage estimates that arose from
-considering paired families alone. The corrected mean configurational coverage
-across all 377,204 stereochemical families is:
-
-| n stereocentres | Theoretical combos | Total families | Corrected coverage |
-|---|---|---|---|
-| 1 | 2 | 138,781 | 55.1% |
-| 2 | 4 | 106,034 | 28.1% |
-| 3 | 8 | 46,550 | 14.0% |
-| 4 | 16 | 28,420 | 6.9% |
-| 5 | 32 | 15,572 | 3.4% |
-
-## Output Files
-
-All data files are deposited on Zenodo (DOI: [10.5281/zenodo.23158759](https://doi.org/10.5281/zenodo.23158759)).
-
-| File | Size | Description |
-|------|------|-------------|
-| `STEREOATLAS_MASTER.csv` | 60.4 MB | Full merged dataset: all stereoisomer pairs with bioactivity, fold differences, and classifications |
-| `STEREOATLAS_MASTER_LITE.csv` | 31.2 MB | Lightweight version with key columns only |
-| `FAMILY_MINMAX_FOLD.csv` | 10.7 MB | S1 strategy: one representative MinMax fold row per (family × target × metric) |
-| `FAMILY_REFERENCE_FOLD.csv` | 13.3 MB | S2 strategy: fold vs reference (least potent form) per group |
-| `TRUE_ISOMER_LITERATURE_CLEAN.csv` | 32.4 MB | Literature-enriched dataset with PubMed references |
-| `by_metric/` | ~30 MB | Per-metric breakdowns (IC50, Ki, EC50, Kd, potency) |
-| `STEREOCENTRE_COUNTS_v4.xlsx` | 8.1 MB | Per-compound stereocentre enumeration and family verification |
-| `MISSING_COMBINATIONS.csv` | 28.4 MB | Untested stereoform combinations per family |
-| `ONLY_R_FAMILIES.csv` | 39.4 MB | Families with only the all-R form tested |
-| `ONLY_S_FAMILIES.csv` | 34.5 MB | Families with only the all-S form tested |
-| `MIXED_SINGLE_FAMILIES.csv` | 94.8 MB | Families with only one mixed-config form tested |
-| `TARGET_STEREOSELECTIVITY_SUMMARY.csv` | 1.1 MB | Per-target stereoselectivity summary |
-| `TARGET_PRIORITY_RANKING.csv` | 1.1 MB | Targets ranked by stereoselectivity evidence |
-| `TARGET_DATASET_COVERAGE.csv` | 713 KB | Coverage score per target |
-| `ATROPISOMER_FOLD_SUMMARY.csv` | 119 KB | Atropisomer pair fold differences |
-| `PROBABLE_ATROPISOMERS_BY_SCAFFOLD.csv` | 290 KB | Predicted atropisomers by scaffold |
